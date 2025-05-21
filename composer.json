@@ -1,0 +1,32 @@
+{
+    "name": "edlugz/tanda-v3",
+    "description": "This package provides you with the means to make requests to the Tanda API-V3",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eddy Lugaye",
+            "email": "eddy.lugaye@gmail.com"
+        }
+    ],
+    "homepage": "https://github.com/edlugz/tanda-v3",
+    "keywords": ["Laravel", "Tanda"],
+    "require": {
+        "php": "^8.2",
+        "guzzlehttp/guzzle": "^7.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "EdLugz\\Tanda\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "EdLugz\\Tanda\\TandaServiceProvider"
+            ],
+            "aliases": {
+                "Tanda": "EdLugz\\Tanda\\Facades\\Tanda"
+            }
+        }
+    }
+}
