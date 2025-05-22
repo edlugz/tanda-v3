@@ -59,7 +59,7 @@ class B2B extends TandaClient
         $payment = TandaTransaction::create($paymentData);
 
         try {
-            $response = $this->call($this->endPoint, ['json' => $parameters], 'POST');
+            $response = $this->call($this->endPoint, ['json' => $parameters]);
             $payment->update(['json_response' => json_encode($response)]);
         } catch (TandaException $e) {
             Log::error("Tanda API Error: {$e->getMessage()}");

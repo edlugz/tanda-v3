@@ -1,6 +1,6 @@
 <?php
 
-namespace Edlugz\Tanda;
+namespace EdLugz\Tanda;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -16,10 +16,6 @@ class TandaServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../database/migrations/' => database_path('migrations'),
         ], 'migrations');
-
-        if ($this->app->runningInConsole()) {
-            $this->bootForConsole();
-        }
     }
 
     public function register()

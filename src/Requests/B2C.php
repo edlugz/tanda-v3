@@ -21,7 +21,7 @@ class B2C extends TandaClient
 
         $this->orgId = Config::get('tanda.organisation_id');
 
-        $this->endPoint = "io/v3/organizations/{$this->orgId}/requests";
+        $this->endPoint = "io/v3/organizations/$this->orgId/requests";
         $this->resultUrl = $resultUrl ?? TandaHelper::getPaymentResultUrl();
     }
 
