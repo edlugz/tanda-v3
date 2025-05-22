@@ -58,11 +58,13 @@ class TandaFunding extends Model
         'receipt_number',
         'timestamp',
         'transaction_reference',
+        'json_request',
         'json_result',
         'json_response',
     ];
 
     protected $casts = [
+        'json_request' => 'string',
         'json_result' => 'string',
         'json_response' => 'string',
         'created_at' => 'datetime',

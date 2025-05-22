@@ -2,22 +2,22 @@
 
 namespace EdLugz\Tanda\Logging;
 
+use Exception;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Level;
 use Monolog\Logger;
-use InvalidArgumentException;
 
-final class Log
+class Log
 {
     /**
      * All the available debug levels.
      *
-     * @var array<string, Level>
+     * @var array
      */
-    private static array $levels = [
+    protected static $levels = [
         'DEBUG'     => Level::Debug,
         'INFO'      => Level::Info,
         'NOTICE'    => Level::Notice,
@@ -31,17 +31,21 @@ final class Log
     /**
      * Set up the logging requirements for the Guzzle package.
      *
-     * @param array $options
+     * @param $options
+     *
+     * @throws Exception
      *
      * @return array
      */
-    public static function enable(array $options): array
+    public static function enable($options) : array
     {
         $level = self::getLogLevel();
 
         $handler = new Logger(
             'Tanda',
-            [new RotatingFileHandler(storage_path('logs/tanda.log'), 30, $level)]
+            [
+                new RotatingFileHandler(storage_path('logs/tanda/tanda.log'), 30, $level),
+            ]
         );
 
         $stack = HandlerStack::create();
@@ -60,12 +64,18 @@ final class Log
     /**
      * Determine the log level specified in the configurations.
      *
-     * @return Level
+     * @throws Exception
+     *
+     * @return mixed
      */
-    private static function getLogLevel(): Level
+    protected static function getLogLevel(): mixed
     {
-        $level = strtoupper(config('tanda.logs.level', 'DEBUG'));
+        $level = strtoupper(config('tanda.logs.level'));
 
-        return self::$levels[$level] ?? throw new InvalidArgumentException('Invalid log level: ' . $level);
+        if (array_key_exists($level, self::$levels)) {
+            return self::$levels[$level];
+        }
+
+        throw new Exception('Debug level not recognized');
     }
 }

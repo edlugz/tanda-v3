@@ -151,7 +151,7 @@ class B2C extends TandaClient
         $payment->update(['json_request' => json_encode($parameters)]);
 
         try {
-            $response = $this->call($this->endPoint, ['json' => $parameters], 'POST');
+            $response = $this->call($this->endPoint, $parameters, 'POST');
             $response = is_object($response) ? $response : (object) $response;
 
             $payment->update(['json_response' => json_encode($response)]);
@@ -234,7 +234,7 @@ class B2C extends TandaClient
         $payment->update(['json_request' => json_encode($parameters)]);
 
         try {
-            $response = $this->call($this->endPoint, ['json' => $parameters], 'POST');
+            $response = $this->call($this->endPoint, $parameters, 'POST');
             $response = is_object($response) ? $response : (object) $response;
 
             $payment->update(['json_response' => json_encode($response)]);

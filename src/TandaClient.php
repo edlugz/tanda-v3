@@ -84,7 +84,7 @@ class TandaClient
      */
     protected function validateConfigurations(): void
     {
-        foreach (['client_id', 'client_secret', 'base_url'] as $configKey) {
+        foreach (['client_id', 'client_secret', 'auth_base_url', 'api_base_url'] as $configKey) {
             if (empty(Config::get("tanda.$configKey"))) {
                 throw new InvalidArgumentException("Tanda config: '$configKey' is not set.");
             }
@@ -135,7 +135,7 @@ class TandaClient
      * Handle API errors.
      *
      * @param Response $response
-     * @throws TandaRequestException
+     * @throws TandaException
      */
     protected function handleError(Response $response): never
     {
@@ -144,6 +144,6 @@ class TandaClient
 
         Log::error("Tanda API Error ($statusCode): $message");
 
-        throw new TandaRequestException("Tanda API Error ($statusCode): $message", $statusCode);
+        throw new TandaException("Tanda API Error ($statusCode): $message", $statusCode);
     }
 }

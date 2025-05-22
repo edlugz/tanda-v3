@@ -87,7 +87,7 @@ class P2P extends TandaClient
         ], $customFieldsKeyValue));
 
         try {
-            $response = $this->call($this->endPoint, ['json' => $parameters]);
+            $response = $this->call($this->endPoint, $parameters);
 
             $payment->update([
                 'json_response' => json_encode($response),

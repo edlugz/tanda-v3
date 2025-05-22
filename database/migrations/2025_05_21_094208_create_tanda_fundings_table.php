@@ -28,6 +28,7 @@ return new class extends Migration {
             $table->string('timestamp')->nullable();
             $table->string('transaction_reference')->nullable();
 
+            $table->text('json_request')->nullable();
             $table->text('json_result')->nullable();
             $table->text('json_response')->nullable();
 

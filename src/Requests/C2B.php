@@ -25,6 +25,9 @@ class C2B extends TandaClient
         $this->resultUrl = $resultUrl ?? TandaHelper::getFundingResultUrl();
     }
 
+    /**
+     *
+     */
     public function request(
         string $serviceProviderId,
         string $merchantWallet,
@@ -34,6 +37,19 @@ class C2B extends TandaClient
     ): TandaFunding {
         $reference = (string) Str::ulid();
 
+        $parameters = [
+            'commandId'         => 'CustomerToMerchantMobileMoneyPayment',
+            'serviceProviderId' => $serviceProviderId,
+            'reference' => $reference,
+            'request' => [
+                ['id' => 'amount', 'label' => 'Amount', 'value' => $amount],
+                ['id' => 'narration', 'label' => 'Narration', 'value' => 'funding transaction'],
+                ['id' => 'ipnUrl', 'label' => 'Notification URL', 'value' => $this->resultUrl],
+                ['id' => 'shortCode', 'label' => 'Short Code', 'value' => $merchantWallet],
+                ['id' => 'accountNumber', 'label' => 'Phone Number', 'value' => $mobileNumber],
+            ],
+        ];
+
         $funding = TandaFunding::create([
             'fund_reference'   => $reference,
             'service_provider' => $serviceProviderId,
@@ -41,24 +57,12 @@ class C2B extends TandaClient
             'amount'           => $amount,
             'merchant_wallet'  => $merchantWallet,
             'shortcode'        => $merchantWallet,
+            'json_request'     => json_encode($parameters),
             $customFieldsKeyValue,
         ]);
 
-        $parameters = [
-            'commandId'         => 'CustomerToMerchantMobileMoneyPayment',
-            'serviceProviderId' => $serviceProviderId,
-            'reference' => $reference,
-            'request' => [
-                ['id' => 'amount', 'label' => 'Amount', 'value' => $amount],
-                ['id' => 'narration', 'label' => 'Narration', 'value' => $amount],
-                ['id' => 'ipnUrl', 'label' => 'Notification URL', 'value' => $this->resultUrl],
-                ['id' => 'shortCode', 'label' => 'Short Code', 'value' => $merchantWallet],
-                ['id' => 'accountNumber', 'label' => 'Phone Number', 'value' => $mobileNumber],
-            ],
-        ];
-
         try {
-            $response = (object) $this->call($this->endPoint, ['json' => $parameters]);
+            $response = (object) $this->call($this->endPoint, $parameters);
             $funding->update(['json_response' => json_encode($response)]);
         } catch (TandaException $e) {
             $response = (object) [
@@ -70,7 +74,7 @@ class C2B extends TandaClient
 
         $data = [
             'response_status'  => $response->status ?? 'error',
-            'response_message' => $response->message ?? 'Unknown error',
+            'response_message' => $response->message ?? $response->error,
         ];
 
         if (($response->status ?? '') === 'P202000') {
