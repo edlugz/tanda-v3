@@ -9,6 +9,8 @@ use EdLugz\Tanda\Helpers\TandaHelper;
 use EdLugz\Tanda\Models\TandaFunding;
 use EdLugz\Tanda\TandaClient;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Config;
+
 
 class C2B extends TandaClient
 {

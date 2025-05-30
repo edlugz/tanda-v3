@@ -8,6 +8,7 @@ use EdLugz\Tanda\Models\TandaTransaction;
 use EdLugz\Tanda\TandaClient;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Config;
 
 class B2C extends TandaClient
 {
@@ -21,7 +22,7 @@ class B2C extends TandaClient
 
         $this->orgId = Config::get('tanda.organisation_id');
 
-        $this->endPoint = "io/v3/organizations/$this->orgId/requests";
+        $this->endPoint = "io/v3/organizations/$this->orgId/request";
         $this->resultUrl = $resultUrl ?? TandaHelper::getPaymentResultUrl();
     }
 
@@ -38,10 +39,10 @@ class B2C extends TandaClient
             'MerchantToCustomerBankPayment',
             'PESALINK',
             $merchantWallet,
-            $accountName,
             $accountNumber,
             $bankCode,
             $amount,
+            $accountName,
             $customFieldsKeyValue
         );
     }
@@ -58,10 +59,10 @@ class B2C extends TandaClient
             'MerchantToCustomerMobileMoneyPayment',
             $serviceProviderId,
             $merchantWallet,
-            null,
             $mobileNumber,
-            null,
+            '',
             $amount,
+            '',
             $customFieldsKeyValue
         );
     }
@@ -91,10 +92,6 @@ class B2C extends TandaClient
         string $senderCurrency,
         string $senderSourceOfFunds,
         string $senderPrincipalActivity,
-        string $senderBankCode,
-        string $senderEmailAddress,
-        string $senderPrimaryAccountNumber,
-        string $senderDateOfBirth,
         string $shortCode,
         array $customFieldsKeyValue = []
     ): TandaTransaction
@@ -181,10 +178,10 @@ class B2C extends TandaClient
         string $commandId,
         string $serviceProviderId,
         string $shortCode,
-        string $accountName,
         string $accountNumber,
         string $bankCode,
         string $amount,
+        string $accountName,
         array $customFieldsKeyValue = []
     ): TandaTransaction {
         $reference = (string) Str::ulid();

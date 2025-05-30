@@ -47,6 +47,7 @@ class B2B extends TandaClient
         $parameters = [
             'commandId'         => $commandId,
             'serviceProviderId' => 'MPESA',
+            'reference'         => $reference,
             'request' => $requestParameters,
         ];
 

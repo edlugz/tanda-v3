@@ -7,6 +7,7 @@ use EdLugz\Tanda\Helpers\TandaHelper;
 use EdLugz\Tanda\Models\TandaTransaction;
 use EdLugz\Tanda\TandaClient;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Config;
 
 class P2P extends TandaClient
 {
@@ -41,7 +42,7 @@ class P2P extends TandaClient
         parent::__construct();
 
         $this->orgId = Config::get('tanda.organisation_id');
-        $this->endPoint = 'io/v3/organizations/'.$this->orgId.'/requests';
+        $this->endPoint = 'io/v3/organizations/'.$this->orgId.'/request';
         $this->resultUrl = $resultUrl ?? TandaHelper::getPaymentResultUrl();
     }
 
@@ -68,6 +69,7 @@ class P2P extends TandaClient
         $parameters = [
             'commandId'         => 'MerchantToMerchantTandaPayment',
             'serviceProviderId' => 'TANDA',
+            'reference'         => $reference,
             'request' => [
                 ['id' => 'amount', 'label' => 'amount', 'value' => $amount],
                 ['id' => 'narration', 'label' => 'Narration', 'value' => 'payment to paybill'],
@@ -87,7 +89,7 @@ class P2P extends TandaClient
         ], $customFieldsKeyValue));
 
         try {
-            $response = $this->call($this->endPoint, $parameters);
+            $response = (object) $this->call($this->endPoint, $parameters);
 
             $payment->update([
                 'json_response' => json_encode($response),
@@ -105,8 +107,9 @@ class P2P extends TandaClient
             'response_message' => $response->message,
         ];
 
-        if ($response->status == '000001') {
-            $data['transaction_id'] = $response->id;
+        if (($response->status ?? '') === 'P202000') {
+            $data['transaction_id'] = $response->trackingId ?? null;
+            $data['tracking_id'] = $response->trackingId ?? null;
         }
 
         $payment->update($data);

@@ -6,6 +6,7 @@ use EdLugz\Tanda\Exceptions\TandaException;
 use EdLugz\Tanda\Models\TandaFunding;
 use EdLugz\Tanda\Models\TandaTransaction;
 use EdLugz\Tanda\TandaClient;
+use Illuminate\Support\Facades\Config;
 
 class Status extends TandaClient
 {
@@ -48,7 +49,7 @@ class Status extends TandaClient
     private function status(string $reference, string $shortCode): array
     {
         try {
-            $response = $this->call($this->endPoint . $reference . '?shortCode=' . $shortCode, [], 'GET');
+            $response = (object) $this->call($this->endPoint . $reference . '?shortCode=' . $shortCode, [], 'GET');
         } catch (TandaException $e) {
             return [
                 'request_status'  => $e->getCode() ?? '500',
@@ -56,21 +57,16 @@ class Status extends TandaClient
             ];
         }
 
-        // Ensure response is an object
-        $response = (object) $response;
-
         $data = [
             'request_status'  => $response->status ?? 'UNKNOWN',
             'request_message' => $response->message ?? 'No response message provided.',
         ];
 
-        if ($response->status === '000000') {
-            $transactionReceipt = $response->receiptNumber ?? null;
-
+        if ($response->status === 'S000000') {
             // Extract transaction reference from result parameters if available
             if (!empty($response->resultParameters)) {
-                foreach ($response->resultParameters as $param) {
-                    if ($param->id === 'transactionRef') {
+                foreach ($response->result as $param) {
+                    if ($param->id === 'ref') {
                         $transactionReceipt = $param->value;
                         break;
                     }
@@ -99,7 +95,7 @@ class Status extends TandaClient
      */
     public function fundingCheck(string $reference, string $shortCode): TandaFunding
     {
-        $funding = TandaFunding::where('funding_reference', $reference)->first();
+        $funding = TandaFunding::where('fund_reference', $reference)->first();
 
         if (!$funding) {
             throw new TandaException("Funding transaction with reference $reference not found.", 404);
