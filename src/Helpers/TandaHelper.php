@@ -141,7 +141,6 @@ class TandaHelper
         if ($request->input('status') === 'S000000') {
             $data['receipt_number'] = $request->input('transactionId') ?? 'N/A';
             $data['transaction_receipt'] = $request->input('result.ref', 'N/A');
-            //$data['registered_name'] = $request->input('resultParameters.accountName', 'N/A');
         }
 
         $transaction->update($data);
