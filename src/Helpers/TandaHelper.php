@@ -97,7 +97,7 @@ class TandaHelper
      */
     public static function getBaseResultUrl(): string
     {
-        return rtrim(Config::get('tanda.tanda_base_result_url'), '/');
+        return rtrim(config('tanda.tanda_base_result_url'), '/');
     }
 
     /**
@@ -105,7 +105,7 @@ class TandaHelper
      */
     public static function getPaymentResultUrl(): string
     {
-        return self::getBaseResultUrl() . '/' . ltrim(Config::get('tanda.result_url'), '/');
+        return self::getBaseResultUrl() . '/' . ltrim(config('tanda.result_url'), '/');
     }
 
     /**
@@ -113,7 +113,7 @@ class TandaHelper
      */
     public static function getFundingResultUrl(): string
     {
-        return self::getBaseResultUrl() . '/' . ltrim(Config::get('tanda.c2b_result_url'), '/');
+        return self::getBaseResultUrl() . '/' . ltrim(config('tanda.c2b_result_url'), '/');
     }
 
     /**
