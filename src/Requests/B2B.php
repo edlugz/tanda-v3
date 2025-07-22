@@ -6,6 +6,7 @@ use EdLugz\Tanda\Exceptions\TandaException;
 use EdLugz\Tanda\Helpers\TandaHelper;
 use EdLugz\Tanda\Models\TandaTransaction;
 use EdLugz\Tanda\TandaClient;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
