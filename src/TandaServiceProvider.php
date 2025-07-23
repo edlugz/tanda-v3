@@ -7,7 +7,7 @@ use Illuminate\Support\ServiceProvider;
 class TandaServiceProvider extends ServiceProvider
 {
     const CONFIG_PATH = __DIR__ . '/../config/tanda.php';
-    public function boot()
+    public function boot(): void
     {
         $this->publishes([
             self::CONFIG_PATH => config_path('tanda.php'),
@@ -18,7 +18,7 @@ class TandaServiceProvider extends ServiceProvider
         ], 'migrations');
     }
 
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/tanda.php', 'tanda');
 
@@ -28,7 +28,7 @@ class TandaServiceProvider extends ServiceProvider
         });
     }
 
-    public function provides()
+    public function provides(): array
     {
         return ['tanda'];
     }

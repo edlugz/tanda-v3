@@ -17,7 +17,7 @@ class Log
      *
      * @var array
      */
-    protected static $levels = [
+    protected static array $levels = [
         'DEBUG'     => Level::Debug,
         'INFO'      => Level::Info,
         'NOTICE'    => Level::Notice,

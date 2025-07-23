@@ -19,7 +19,7 @@ class P2P extends TandaClient
     protected string $endPoint;
 
     /**
-     * The organisation ID assigned for the application on Tanda API.
+     * The organization ID assigned for the application on Tanda API.
      *
      * @var string
      */
@@ -55,7 +55,7 @@ class P2P extends TandaClient
      * @param array $customFieldsKeyValue
      *
      * @return TandaTransaction
-     * @throws TandaRequestException
+     * @throws TandaException
      */
     public function send(
         string $senderWallet,
@@ -94,7 +94,7 @@ class P2P extends TandaClient
             $payment->update([
                 'json_response' => json_encode($response),
             ]);
-        } catch (TandaRequestException $e) {
+        } catch (TandaException $e) {
             $response = (object) [
                 'status'       => $e->getCode() ?? '500',
                 'responseCode' => $e->getCode() ?? '500',

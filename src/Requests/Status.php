@@ -18,7 +18,7 @@ class Status extends TandaClient
     protected string $endPoint;
 
     /**
-     * The organisation ID assigned for the application on Tanda API.
+     * The organization ID assigned for the application on Tanda API.
      *
      * @var string
      */
@@ -27,7 +27,6 @@ class Status extends TandaClient
     /**
      * Transaction constructor.
      *
-     * @throws TandaRequestException
      * @throws TandaException
      */
     public function __construct()
