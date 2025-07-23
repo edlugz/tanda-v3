@@ -44,7 +44,7 @@ class TandaHelper
      */
     public function payout(Request $request): ?TandaTransaction
     {
-        return $this->processTransaction($request, 'transaction_id');
+        return $this->processTransaction($request);
     }
 
     /**
@@ -90,7 +90,7 @@ class TandaHelper
      */
     public function p2p(Request $request): ?TandaTransaction
     {
-        return $this->processTransaction($request, 'payment_reference');
+        return $this->processTransaction($request);
     }
 
     /**
@@ -119,32 +119,33 @@ class TandaHelper
 
     /**
      * Generic transaction processor.
+     * @param Request $request
+     * @return TandaTransaction|null
      * @throws JsonException
      */
-    private function processTransaction(Request $request, string $identifier): ?TandaTransaction
+    private function processTransaction(Request $request): ?TandaTransaction
     {
-        $transaction = TandaTransaction::where($identifier, $request->input($identifier))->first();
+        $transaction = TandaTransaction::where('transaction_id', $request->input('trackingId'))->first();
 
         if (!$transaction) {
             return null;
         }
 
-        $transaction->update([
-            'json_result' => json_encode($request->all(), JSON_THROW_ON_ERROR),
-        ]);
+        $result = $request->input('result', []);
 
-        $data = [
-            'request_status'  => $request->input('status'),
-            'request_message' => $request->input('message'),
-            'timestamp'       => $request->input('timestamp'),
+        $updateData = [
+            'json_result'        => json_encode($request->all(), JSON_THROW_ON_ERROR),
+            'request_status'     => $request->input('status'),
+            'request_message'    => $request->input('message'),
+            'timestamp'          => $request->input('timestamp'),
         ];
 
         if ($request->input('status') === 'S000000') {
-            $data['receipt_number'] = $request->input('transactionId') ?? 'N/A';
-            $data['transaction_receipt'] = $request->input('result.ref', 'N/A');
+            $updateData['receipt_number']       = $request->input('transactionId') ?? 'N/A';
+            $updateData['transaction_receipt']  = $result['ref'] ?? 'N/A';
         }
 
-        $transaction->update($data);
+        $transaction->update($updateData);
 
         return $transaction;
     }
@@ -155,7 +156,7 @@ class TandaHelper
      */
     private function processFunding(Request $request): ?TandaFunding
     {
-        $funding = TandaFunding::where('transaction_id', $request->input('trackingId'))->first();
+        $funding = TandaFunding::where('fund_reference', $request->input('reference'))->first();
 
         if (!$funding) {
             return null;
@@ -171,9 +172,11 @@ class TandaHelper
             'timestamp'       => $request->input('timestamp'),
         ];
 
+        $result = $request->input('result', []);
+
         if ($request->input('status') === 'S000000') {
             $data['receipt_number'] = $request->input('transactionId') ?? 'N/A';
-            $data['transaction_reference'] = $request->input('result.ref', 'N/A');
+            $data['transaction_reference'] = $result['ref'] ?? 'N/A';
         }
 
         $funding->update($data);
