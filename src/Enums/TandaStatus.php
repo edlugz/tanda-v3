@@ -2,21 +2,18 @@
 
 namespace EdLugz\Tanda\Enums;
 
-enum TandaResponseStatus: string
+enum TandaStatus: string
 {
     case SUCCESSFUL = 'S000000';
     case PROCESSING = 'P202000';
-
     case BAD_REQUEST = 'E400000';
     case UNAUTHORIZED = 'E401000';
     case FORBIDDEN = 'E403000';
     case NOT_FOUND = 'E404000';
     case DUPLICATE_RESOURCE = 'E409000';
-
     case PRODUCT_NOT_FOUND = 'E422005';
     case INSUFFICIENT_BALANCE = 'E422006';
     case PAYMENT_VALIDATION_FAILED = 'E422022';
-
     case SERVER_ERROR = 'E500000';
     case NOT_IMPLEMENTED = 'E501000';
     case SERVICE_UNAVAILABLE = 'E503000';
