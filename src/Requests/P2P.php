@@ -109,7 +109,6 @@ class P2P extends TandaClient
 
         if (($response->status ?? '') === 'P202000') {
             $data['transaction_id'] = $response->trackingId ?? null;
-            $data['tracking_id'] = $response->trackingId ?? null;
         }
 
         $payment->update($data);
