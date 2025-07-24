@@ -88,11 +88,10 @@ class Status extends TandaClient
      * Check funding transaction status.
      *
      * @param string $reference
-     * @param string $shortCode
      * @return TandaFunding
      * @throws TandaException
      */
-    public function fundingCheck(string $reference, string $shortCode): TandaFunding
+    public function fundingCheck(string $reference): TandaFunding
     {
         $funding = TandaFunding::where('fund_reference', $reference)->first();
 
@@ -100,7 +99,8 @@ class Status extends TandaClient
             throw new TandaException("Funding transaction with reference $reference not found.", 404);
         }
 
-        $data = $this->status($reference, $shortCode);
+        $data = $this->status($reference, $funding->merchant_wallet);
+        
         $funding->update($data);
 
         return $funding;
@@ -110,11 +110,10 @@ class Status extends TandaClient
      * Check payment transaction status.
      *
      * @param string $reference
-     * @param string $shortCode
      * @throws TandaException
      * @return TandaTransaction
      */
-    public function paymentCheck(string $reference, string $shortCode): TandaTransaction
+    public function paymentCheck(string $reference): TandaTransaction
     {
         $transaction = TandaTransaction::where('payment_reference', $reference)->first();
 
@@ -122,7 +121,7 @@ class Status extends TandaClient
             throw new TandaException("Transaction with reference $reference not found.", 404);
         }
 
-        $data = $this->status($reference, $shortCode);
+        $data = $this->status($reference, $transaction->merchant_wallet);
 
         $transaction->update($data);
 
