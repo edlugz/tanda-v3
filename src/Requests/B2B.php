@@ -97,7 +97,8 @@ class B2B extends TandaClient
             array_merge($customFieldsKeyValue, [
                 'merchant_wallet' => $merchantWallet,
                 'amount' => $amount,
-                'service_provider_id' => $till,
+                'account_number' => $till,
+                'service_provider_id' => 'MPESA',
             ])
         );
     }
@@ -120,8 +121,8 @@ class B2B extends TandaClient
             array_merge($customFieldsKeyValue, [
                 'merchant_wallet' => $merchantWallet,
                 'amount' => $amount,
-                'service_provider_id' => $paybill,
-                'account_number' => $accountNumber,
+                'service_provider_id' => 'MPESA',
+                'account_number' => $paybill,
             ])
         );
     }
