@@ -58,7 +58,6 @@ class C2B extends TandaClient
             'account_number'   => $mobileNumber,
             'amount'           => $amount,
             'merchant_wallet'  => $merchantWallet,
-            'shortcode'        => $merchantWallet,
             'json_request'     => json_encode($parameters),
             $customFieldsKeyValue,
         ]);
@@ -81,7 +80,6 @@ class C2B extends TandaClient
 
         if (($response->status ?? '') === 'P202000') {
             $data['transaction_id'] = $response->trackingId ?? null;
-            $data['tracking_id'] = $response->trackingId ?? null;
         }
 
         $funding->update($data);
