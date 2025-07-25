@@ -18,6 +18,62 @@ enum TandaStatus: string
     case NOT_IMPLEMENTED = 'E501000';
     case SERVICE_UNAVAILABLE = 'E503000';
 
+    public function isSuccessful(): bool
+    {
+        return $this === self::SUCCESSFUL;
+    }
+
+    public function isProcessing(): bool
+    {
+        return $this === self::PROCESSING;
+    }
+
+    public function isBadRequest(): bool
+    {
+        return $this === self::BAD_REQUEST;
+    }
+    public function isUnauthorized(): bool
+    {
+        return $this === self::UNAUTHORIZED;
+    }
+    public function isForbidden(): bool
+    {
+        return $this === self::FORBIDDEN;
+    }
+    public function isNotFound(): bool
+    {
+        return $this === self::NOT_FOUND;
+    }
+    public function isDuplicateResource(): bool
+    {
+        return $this === self::DUPLICATE_RESOURCE;
+    }
+    public function isProductNotFound(): bool
+    {
+        return $this === self::PRODUCT_NOT_FOUND;
+    }
+    public function isInsufficientBalance(): bool
+    {
+        return $this === self::INSUFFICIENT_BALANCE;
+    }
+    public function isPaymentValidationFailed(): bool
+    {
+        return $this === self::PAYMENT_VALIDATION_FAILED;
+    }
+    public function isServerError(): bool
+    {
+        return $this === self::SERVER_ERROR;
+    }
+    public function isNotImplemented(): bool
+    {
+        return $this === self::NOT_IMPLEMENTED;
+    }
+    public function isServiceUnavailable(): bool
+    {
+        return $this === self::SERVICE_UNAVAILABLE;
+    }
+
+
     public function description(): string
     {
         return match ($this) {
