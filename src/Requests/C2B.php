@@ -74,13 +74,10 @@ class C2B extends TandaClient
         }
 
         $data = [
-            'response_status'  => $response->status ?? 'error',
-            'response_message' => $response->message ?? $response->error,
+            'response_status'  => $response->status ?? $response['status'] ?? 'ERROR',
+            'response_message' => $response->message ?? $response['message'] ?? 'Unknown error',
+            'transaction_id'   => $response->trackingId ?? $response['trackingId'] ?? null,
         ];
-
-        if (($response->status ?? '') === 'P202000') {
-            $data['transaction_id'] = $response->trackingId ?? null;
-        }
 
         $funding->update($data);
 
