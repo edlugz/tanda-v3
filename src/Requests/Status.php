@@ -2,6 +2,7 @@
 
 namespace EdLugz\Tanda\Requests;
 
+use EdLugz\Tanda\Enums\TandaStatus;
 use EdLugz\Tanda\Exceptions\TandaException;
 use EdLugz\Tanda\Models\TandaFunding;
 use EdLugz\Tanda\Models\TandaTransaction;
@@ -61,7 +62,9 @@ class Status extends TandaClient
             'request_message' => $response->message ?? 'No response message provided.',
         ];
 
-        if ($response->status === 'S000000') {
+        $statusCode = $response->status ?? $response['status'];
+
+        if (TandaStatus::from($statusCode) === TandaStatus::SUCCESSFUL) {
             // Extract transaction reference from result parameters if available
             if (!empty($response->resultParameters)) {
                 foreach ($response->result as $param) {
