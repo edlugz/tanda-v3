@@ -26,7 +26,7 @@ class B2B extends TandaClient
             throw new TandaException('Missing organization ID in configuration.');
         }
 
-        $this->endPoint = 'io/v3/organizations/' . $this->orgId . '/requests';
+        $this->endPoint = 'io/v3/organizations/' . $this->orgId . '/request';
         $this->resultUrl = $resultUrl ?? TandaHelper::getPaymentResultUrl();
     }
 
@@ -72,9 +72,9 @@ class B2B extends TandaClient
         }
 
         $payment->update([
-            'response_status'  => $response->status ?? 'ERROR',
-            'response_message' => $response->message ?? 'Unknown error',
-            'transaction_id'   => $response->id ?? null,
+            'response_status'  => $response->status ?? $response['status'] ?? 'ERROR',
+            'response_message' => $response->message ?? $response['message'] ?? 'Unknown error',
+            'transaction_id'   => $response->trackingId ?? $response['trackingId'] ?? null,
         ]);
 
         return $payment;
