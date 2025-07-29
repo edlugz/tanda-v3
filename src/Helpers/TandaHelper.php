@@ -23,20 +23,30 @@ class TandaHelper
     public static function serviceProvider(string $mobileNumber, bool $airtime = false): string
     {
         $patterns = [
-            'MPESA' => '/(?:0)?((?:(?:7[01249][0-9])|(?:75[789])|(?:76[89]))[0-9]{6})$/',
-            'AIRTELMONEY' => '/(?:0)?((?:(?:73[0-9])|(?:75[0-6])|(78[5-9]))[0-9]{6})$/',
-            'TKASH' => '/(?:0)?(77[0-9][0-9]{6})/',
-            'EQUITEL' => '/0?(76[3-9][0-9]{6})/',
+            'MPESA' => '/(?:0)?((?:(?:7[01249][0-9])|(?:75[789])|(?:76[89])|(?:11[0-5]))[0-9]{6})$/',
+            'AIRTELMONEY' => '/(?:0)?((?:(?:73[0-9])|(?:75[0-6])|(?:78[0-9])|(?:10[0-2]|104))[0-9]{6})$/',
+            'TKASH' => '/(?:0)?(77[0-9]{7})$/',
+            'EQUITEL' => '/(?:0)?(76[3-9][0-9]{6})$/',
         ];
 
         foreach ($patterns as $provider => $regex) {
             if (preg_match($regex, $mobileNumber)) {
-                return $airtime ? str_replace('MONEY', '', $provider) : $provider;
+                if ($airtime) {
+                    return match ($provider) {
+                        'MPESA' => 'SAFARICOM',
+                        'AIRTELMONEY' => 'AIRTEL',
+                        'TKASH' => 'TELKOM',
+                        default => $provider, 
+                    };
+                }
+
+                return $provider;
             }
         }
 
         return '0';
     }
+
 
     /**
      * Process payout results.
