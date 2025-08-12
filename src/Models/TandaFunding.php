@@ -41,7 +41,7 @@ class TandaFunding extends Model
 {
     use SoftDeletes, HasFactory;
 
-    protected array $guarded = [];
+    protected $guarded = [];
 
     protected $casts = [
         'json_request' => 'string',
