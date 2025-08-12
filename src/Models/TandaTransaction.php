@@ -49,31 +49,7 @@ class TandaTransaction extends Model
 {
     use SoftDeletes, HasFactory;
 
-    protected $fillable = [
-        'payment_id',
-        'payment_reference',
-        'service_provider',
-        'merchant_wallet',
-        'short_code',
-        'amount',
-        'account_number',
-        'contact',
-        'service_provider_id',
-        'response_status',
-        'response_message',
-        'transaction_id',
-        'request_status',
-        'request_message',
-        'receipt_number',
-        'transaction_receipt',
-        'timestamp',
-        'transactable_type',
-        'transactable_id',
-        'json_request',
-        'json_response',
-        'json_result',
-        'registered_name',
-    ];
+    protected $guarded = [];
 
     protected $casts = [
         'json_response' => 'string',

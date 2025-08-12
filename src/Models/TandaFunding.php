@@ -41,27 +41,7 @@ class TandaFunding extends Model
 {
     use SoftDeletes, HasFactory;
 
-    protected $fillable = [
-        'funding_id',
-        'fund_reference',
-        'service_provider',
-        'account_number',
-        'merchant_wallet',
-        'short_code',
-        'amount',
-        'response_status',
-        'response_message',
-        'tracking_id',
-        'transaction_id',
-        'request_status',
-        'request_message',
-        'receipt_number',
-        'timestamp',
-        'transaction_reference',
-        'json_request',
-        'json_result',
-        'json_response',
-    ];
+    protected array $guarded = [];
 
     protected $casts = [
         'json_request' => 'string',
