@@ -52,15 +52,14 @@ class C2B extends TandaClient
             ],
         ];
 
-        $funding = TandaFunding::create([
+        $funding = TandaFunding::create(array_merge([
             'fund_reference'   => $reference,
             'service_provider' => $serviceProviderId,
             'account_number'   => $mobileNumber,
             'amount'           => $amount,
             'merchant_wallet'  => $merchantWallet,
             'json_request'     => json_encode($parameters),
-            $customFieldsKeyValue,
-        ]);
+        ], $customFieldsKeyValue));
 
         try {
             $response = (object) $this->call($this->endPoint, $parameters);
